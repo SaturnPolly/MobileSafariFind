@@ -1,0 +1,39 @@
+h1. MobileSafariFind
+
+This is a bookmarklet that adds an in page search feature to the iPhone version of Safari. Goto "http://saturnpolly.net/msf/install.html":http://saturnpolly.net/msf/install.html to install it.
+
+h2. Features
+
+* Comes with a small and simple UI
+** Allows navigation through search results
+** Shows number of results and current position
+** Adapts to the zoom level, orientation and the position on the page
+* Leverages native browser features as much as possible and operates on the DOM through the API only to ensure the page stays functional
+* No load time dependencies, all that is needed comes tightly packaged in less than 6KB. You can use it with or without a connection.
+
+h2. Development
+
+A testpage (*dev.html*) to ease development is included. It takes care of the things the Ant script does when building and provides several diffirent markup variations for testing.
+
+h3. 3rd party libraries/tools
+
+* "YUI Compressor":http://developer.yahoo.com/yui/compressor/ for the JS/CSS
+* "jQuery":http://jquery.com/ for setting up the testpage
+
+h2. Todos
+
+I'm not fully happy yet, but it's in a decent state right now and I finally wanted to release it. The following things are subject to change: 
+
+h3. Speed
+
+Can't say how the experience is on the 3Gs but on my 3G iPhone it's a little slow (load time and search phase) when I have several tabs opened in Safari and when there are a lot of search results.
+
+h3. Navigating through the results
+
+At the moment document.location.hash is used to jump to the results, quick and simple. Two problems:
+* The search results may not be in the order they appear from top to bottom on the screen. This results in jumping up and down and a weird experience.
+* If the page has been zoomed it can happen the marked results ends up in one of the corners which makes it hard to quickly scan the context.
+
+h3. try/catch for control flow - ewww!
+
+Where possible "Range.surroundContents":http://www.w3.org/TR/2000/REC-DOM-Level-2-Traversal-Range-20001113/ranges.html#Level2-Range-method-surroundContents is used to highlight a result. Depending on the involved markup it throws a RangeException (BAD_BOUNDARYPOINTS_ERR). So far I failed to understand how to check the range/selection in a *simple and reliable way* if surroundContents can be used or not.

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="MobileSafariFind" basedir="." default="default">
+	
+	<property name="compressor-path" value="3rd-party/yuicompressor-2.4.2.jar"/>
+	<record name="build.log" loglevel="verbose" append="false"/>
+
+	<target name="default" depends="inline-css">
+		<loadfile property="msf" srcfile="msf-min.js"/>
+		<copy file="install-template.html" tofile="install.html" overwrite="true"/>
+		<replace file="install.html" token="##MSF##" value="${msf}"/>
+	</target>
+	
+	<!-- CLEANING --> 
+	<target name="clean" depends="clean-js, clean-css">
+	</target>
+	<target name="clean-js">
+	  <delete file="msf-min.js"/>
+	</target>
+	<target name="clean-css">
+	  <delete file="msf-min.css"/>
+	</target>
+	
+	<!-- INLINING -->
+	<target name="inline-css" depends="min-css, min-js">
+		<loadfile property="minified-css" srcfile="msf-min.css"/>
+	  <replace file="msf-min.js" token="/*CSS*/" value="${minified-css}"/>
+	</target>
+	
+	<!-- MINIFICATION --> 
+	<target name="min-css" depends="clean-css">
+    <apply executable="java" parallel="false" failonerror="true">
+      <fileset dir="src" includes="msf.css"/>
+      <arg value="-jar"/>
+      <arg path="${compressor-path}"/>
+      <arg value="--type=css"/>
+      <srcfile/>
+      <arg line="-o"/>
+      <mapper type="glob" from="*.css" to="*-min.css"/>
+      <targetfile/>
+    </apply>
+		<replace file="msf-min.css" token="__MSF__" value="@"/>
+	</target>
+  <target name="min-js" depends="clean-js">
+    <apply executable="java" parallel="false" failonerror="false">
+      <fileset dir="src" includes="msf.js"/>
+      <arg value="-jar"/>
+    	<arg path="${compressor-path}"/>
+    	<arg value="--type=js"/>
+       <srcfile/>
+      <arg line="-o"/>
+      <mapper type="glob" from="*.js" to="*-min.js"/>
+      <targetfile/>
+    </apply>
+  </target>
+</project>

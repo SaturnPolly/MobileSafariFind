@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MobileSafariFind Testpage</title>
+    <style>
+      body {
+        font-family:Georgia;
+        font-size:.8em;
+      }
+      #controls a {
+        background:#eee;
+        padding:3px 5px;
+        margin-right:10px;
+      }
+      p {
+        margin:0;
+      }
+      p.description {
+        font-size:.9em;
+        color:#999;
+        margin:.2em 0 1em 0;
+      }
+      #searchtests em {
+        color:#c00;
+        letter-spacing:.1em;
+      }
+      span.term {
+        font-family:monospace;
+        font-weight:bold;
+        font-size:1.1em;
+        padding:0 3px;
+      }
+    </style>
+	</head>
+	<body>
+	  <div id="controls">
+	    <a href="" id="run">MobileSafariFind (unminified)</a>
+      <a href="" id="run-min">MobileSafariFind</a> search around the terms <span class="term">information</span>, <span class="term">It's a series of tubes</span> and <span class="term">mount</span>
+	  </div>
+    
+    <ol id="searchtests">
+      <li>
+        <p>They want to deliver vast amounts of information over the Internet. And again, the Internet is not something that you just dump 
+          something on. It's not a big truck. It's a series of tubes. And if you don't understand, those tubes can be filled and if they are 
+          filled, when you put your message in, it ge ts in line and it's going to be delayed by anyone that puts into that tube enormous 
+          amounts of material, enormous amounts of material.</p>
+        <p class="description">Plain textContent</p>
+      </li>
+      <li>
+        <p>They want to deliver vast amounts of in<b>format</b>ion over the Internet. And again, the Internet is not something that you just 
+          dump something on. It's not a big truck. It's a <b>series</b> of tubes. And if you don't understand, those tubes can be filled and 
+          if they are filled, when you put your message in, it ge ts in line and it's going to be delayed by anyone that puts into that tube enormous amounts of material, enormous amo<b>un</b>ts of material.</p>
+        <p class="description">Single element within the searchterm, not touching boundaries</p>
+      </li>
+      <li>
+        <p>They want to deliver vast amounts of in<em>for</em><b>m</b>a<b>ti</b>on over the Internet. And again, the Internet is not something that 
+          you just dump something on. It's not a big truck. It<b>'s</b> a <em>series</em> of tubes. And if you don't understand, those tubes can be filled 
+          and if they are filled, when you put your message in, it g ets in line and it's going to be delayed by anyone that puts into that 
+          tube enormous amounts of material, enormous am<b>o<em>u</em></b>nts of material.</p>
+        <p class="description">Multiple elements within the searchterm, not touching boundaries</p>
+      </li>
+      <li>
+        <p>They want to deliver vast amounts of <b>info</b>rmation over the Internet. And again, the Internet is not something that you just dump 
+        something on. It's not a big truck. It's a <em>series of tubes</em>. And if you don't understand, those tubes can be filled and if they 
+        are filled, when you put your message in, it get s in line and it's going to be delayed by anyone that puts into that tube enormous amounts of material, enormous a<b>mount</b>s of material.</p>
+        <p class="description">Single element within the searchterm, touching boundaries</p>
+      </li>
+      <li>
+        <p>They want to deliver vast amounts of <em>info</em>rmat<b>ion</b> over the Internet. And again, the Internet is not something that you 
+        just dump something on. It's not a big truck. <b>It's <em>a</em> series</b> of <em>tubes</em>. And if you don't understand, those tubes 
+        can be filled and if they are filled, when you put your message in, it ge ts in line and it's going to be delayed by anyone that puts 
+        into that tube enormous amounts of material, enormous a<em>mo</em><b>unt</b>s of material.</p>
+        <p class="description">Multiple elements within the searchterm, touching boundaries</p>
+      </li>
+      <li>
+        <p>They want to deliver vast amounts <b>of info</b>rmation over the Internet. And again, the Internet is not something that you just 
+          dump something on. It's not a big truck. It's a <em>series of tubes. And if you don't understand</em>, those tubes can be filled and if 
+          they are filled, when you put your message in, it ge ts in line and it's going to be delayed by anyone that puts into that tube enormous amounts of material, <b>enormous amounts</b> of material.</p>
+        <p class="description">Single element within the searchterm, crossing boundaries</p>
+      </li>
+      <li>
+        <p>They want to deliver vast <em>amounts of info</em><b>rmation over</b> the Internet. And again, the Internet is not something that 
+        you just dump something on. <b>It's not a big truck. It's</b> a <em>series of tubes</em>. And if you don't understand, those tubes 
+        can be filled and if they are filled, when you put your message in, it ge ts in line and it's going to be delayed by anyone that puts 
+        into that tube enormous amounts of material, enormous amounts of material.</p>
+        <p class="description">Multiple elements within the searchterm, crossing boundaries</p>
+      </li>
+      <li>
+        <p>foobarus <span>maximus <i>AAAA</i>AAA</span> la<i>lalal</i>al <b>lorem <span><i>ip</i><span style="color:green">sum</span> BBBB</span> dued bla dumm</b> dumm</p>
+        <p class="description">This is just batshit crazy. If <strong>AAAAAAA lalalalal lorem ipsum BBBB</strong> is found and marked correctly things should be fine.</p>
+      </li>
+    </ol>
+    
+    <script src="3rd-party/jquery-1.4.1.min.js"></script>
+    <script>
+      $(function() {
+        var css;
+        $.get('src/msf.css', function(data) {
+          css=data.replace(/\/\/[^\n]+\n/g, '');
+          $.ajax({url:'msf-min.js', dataType:'text', cache:false, success:function(js) {
+            $('#run-min').attr('href', 'javascript:'+js);  
+          }});
+          $.ajax({url:'src/msf.js', dataType:'text', cache:false, success:function(js) {
+            var j=js.replace(/\/\/.+/g, '').replace('/*CSS*/', css);
+            $('#run').attr('href', 'javascript:'+j);
+          }});
+        });
+      });
+    </script>
+	</body>
+</html>
