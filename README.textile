@@ -1,6 +1,8 @@
 h1. MobileSafariFind
 
+<div style="float:right;">!http://saturnpolly.net/msf/msf-small.png!</div>
 This is a bookmarklet that adds an in page search feature to the iPhone version of Safari. Goto "http://saturnpolly.net/msf/install.html":http://saturnpolly.net/msf/install.html to install it.
+Some more screenshots and a little background can be found in an "accompanying blog post":http://blg.saturnpolly.net/2010/02/09/in-page-search-safari-iphone/.
 
 h2. Features
 

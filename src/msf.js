@@ -1,7 +1,7 @@
 /* MobileSafariFind
  * Copyright 2010, Paul Styrnol
  * Released under MIT license:
- * http://saturnpolly.net/licence/MIT-LICENSE.txt 
+ * http://github.com/SaturnPolly/MobileSafariFind/blob/master/MIT-LICENSE.txt
  */
 (function(){
   var w=window,
